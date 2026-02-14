@@ -8,60 +8,62 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
     height:100vh;
-    background:radial-gradient(circle at top,#2b1055,#000);
+    overflow:hidden;
+    font-family:'Poppins',sans-serif;
+    background:radial-gradient(circle at top,#1b0f3b,#05010d);
     display:flex;
     justify-content:center;
     align-items:center;
-    overflow:hidden;
     color:white;
 }
 
-/* Login */
-#passwordScreen{text-align:center;z-index:10}
-input{padding:14px 22px;border-radius:30px;border:none;font-size:16px;margin-top:20px}
-button{padding:14px 30px;border:none;border-radius:30px;font-size:16px;cursor:pointer;margin-top:18px}
+/* 🌌 Night sky shimmer */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,.6),transparent),
+      radial-gradient(1px 1px at 80% 40%,rgba(255,255,255,.4),transparent),
+      radial-gradient(1px 1px at 60% 70%,rgba(255,255,255,.5),transparent);
+    animation:twinkle 6s infinite alternate;
+    pointer-events:none;
+}
+@keyframes twinkle{from{opacity:.4}to{opacity:.8}}
+
+#passwordScreen{text-align:center}
+#passwordScreen h1{font-family:'Dancing Script',cursive;font-size:2.4rem}
+input{padding:14px 24px;border-radius:30px;border:none;margin-top:22px}
+button{padding:14px 34px;border:none;border-radius:30px;font-size:16px;cursor:pointer;margin-top:20px}
 #unlockBtn{background:#ff4d6d;color:white}
 
-/* Main */
-#mainContent{display:none;text-align:center;z-index:5;width:90%;max-width:420px}
+#mainContent{display:none;text-align:center;width:100%;height:100%}
 
 h1{
     font-family:'Dancing Script',cursive;
-    font-size:2.4rem;
-    background:linear-gradient(45deg,#ff4d6d,#ff99c8);
+    font-size:2.7rem;
+    margin-top:50px;
+    background:linear-gradient(45deg,#ff4d6d,#ffd6e8,#c77dff);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
 
-.buttons{margin-top:40px}
+.buttons{margin-top:60px}
 
-/* YES GLOW */
 #yesBtn{
     background:linear-gradient(45deg,#ff4d6d,#ff1e4d);
     color:white;
-    position:relative;
-    box-shadow:0 0 20px rgba(255,77,109,0.6);
-    animation:yesGlow 2.5s ease-in-out infinite;
+    box-shadow:0 0 20px rgba(255,77,109,.6);
+    animation:yesGlow 2.5s infinite;
 }
-
 @keyframes yesGlow{
-    0%{box-shadow:0 0 15px rgba(255,77,109,0.4)}
-    50%{box-shadow:0 0 35px rgba(255,77,109,0.9)}
-    100%{box-shadow:0 0 15px rgba(255,77,109,0.4)}
-}
-
-.finalGlow{
-    animation:finalYesGlow 1.6s ease-in-out infinite !important;
-}
-
-@keyframes finalYesGlow{
-    0%{box-shadow:0 0 25px rgba(255,77,109,0.6)}
-    50%{box-shadow:0 0 60px rgba(255,77,109,1)}
-    100%{box-shadow:0 0 25px rgba(255,77,109,0.6)}
+    0%{box-shadow:0 0 15px rgba(255,77,109,.4)}
+    50%{box-shadow:0 0 40px rgba(255,77,109,1)}
+    100%{box-shadow:0 0 15px rgba(255,77,109,.4)}
 }
 
 #noBtn{
@@ -70,51 +72,38 @@ h1{
     position:fixed;
     left:60%;
     top:55%;
-    z-index:100;
 }
 
-/* Message */
-.message{
-    margin-top:30px;
+.loveMessage{
     display:none;
-    font-size:18px;
-    color:#ffb6c1;
-    line-height:1.6;
-    animation:fadeIn 2s forwards;
+    margin-top:40px;
+    font-family:'Dancing Script',cursive;
+    font-size:1.7rem;
+    font-style:italic;
+    line-height:1.9;
 }
+.loveMessage span{
+    display:block;
+    opacity:0;
+    animation:fadeLine 1.2s forwards;
+}
+.loveMessage span:nth-child(n){animation-delay:calc(var(--i)*0.9s)}
 
-@keyframes fadeIn{
+@keyframes fadeLine{
     from{opacity:0;transform:translateY(20px)}
     to{opacity:1;transform:translateY(0)}
 }
 
-/* Falling */
-.fall{
+/* Particles */
+.fall,.trail,.burst{
     position:fixed;
-    top:-10px;
-    font-size:22px;
-    animation:fall linear infinite;
     pointer-events:none;
 }
 
 @keyframes fall{
+    from{transform:translateY(0)}
     to{transform:translateY(110vh) rotate(360deg)}
 }
-
-/* Trail & Burst */
-.trail,.burst{
-    position:fixed;
-    pointer-events:none;
-}
-.trail{font-size:16px;animation:trailFade 1.2s forwards}
-@keyframes trailFade{to{opacity:0;transform:translateY(-20px) scale(0.6)}}
-.burst{font-size:22px;animation:burst 1.4s forwards}
-@keyframes burst{
-    to{transform:translate(var(--x),var(--y)) scale(1.2);opacity:0}
-}
-
-/* Fireworks */
-canvas{position:fixed;top:0;left:0;pointer-events:none}
 </style>
 </head>
 
@@ -122,183 +111,189 @@ canvas{position:fixed;top:0;left:0;pointer-events:none}
 
 <div id="passwordScreen">
     <h1>Enter Our Special Date 💕</h1>
-    <input type="password" id="passwordInput" placeholder="DDMMYYYY">
+    <input id="passwordInput" type="password" placeholder="DDMMYYYY">
     <br>
     <button id="unlockBtn">Unlock 💖</button>
 </div>
 
 <div id="mainContent">
     <h1>Meenu, Will You Be My Valentine? 💖</h1>
+
     <div class="buttons">
         <button id="yesBtn">Yes ❤️</button>
         <button id="noBtn">No 🙈</button>
     </div>
 
-    <div class="message" id="loveMessage">
-        Meenu ❤️<br>
-        Every moment with you feels magical ✨<br>
-        I promise to love you endlessly 🌹<br>
-        Happy Valentine's Day, My Love ❤️
+    <div class="loveMessage" id="loveMessage">
+        <span style="--i:1;color:#ff4d6d">Meenu ❤️</span>
+        <span style="--i:2;color:#fff1c1">Every moment with you feels like magic ✨</span>
+        <span style="--i:3;color:#ffd6e8">Your smile turns ordinary days into beautiful memories  🍁</span>
+        <span style="--i:4;color:#fff1c1">Meeting you was the best moment of my life</span>
+        <span style="--i:5;color:#ffd6e8">Your presence fills my world with eternal bliss</span>
+        <span style="--i:6;color:#ffb6c1">I promise to fill your life with happiness</span>
+        <span style="--i:7;color:#ff85a2">Happy Valentine’s Day, my love ❤️</span>
     </div>
 </div>
 
-<canvas id="fireworks"></canvas>
-
-<!-- AUDIO -->
-<audio id="bgMusic" loop src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+<audio id="music" loop src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
 <audio id="heartbeat" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2f6c6f9c7f.mp3"></audio>
 
 <script>
-/* ELEMENTS */
-const passwordScreen=document.getElementById("passwordScreen");
-const passwordInput=document.getElementById("passwordInput");
+const pass=document.getElementById("passwordInput");
 const unlockBtn=document.getElementById("unlockBtn");
-const mainContent=document.getElementById("mainContent");
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const message=document.getElementById("loveMessage");
-const music=document.getElementById("bgMusic");
+const passScreen=document.getElementById("passwordScreen");
+const main=document.getElementById("mainContent");
+const yes=document.getElementById("yesBtn");
+const no=document.getElementById("noBtn");
+const msg=document.getElementById("loveMessage");
+const music=document.getElementById("music");
 const heartbeat=document.getElementById("heartbeat");
 
-/* LOGIN */
-function unlock(){
-    if(passwordInput.value==="10102025"){
-        passwordScreen.style.display="none";
-        mainContent.style.display="block";
-        music.play();
-        startHeartbeat();
-        startFalling();
-        startRunaway();
-    }
-}
-unlockBtn.onclick=unlock;
-passwordInput.onkeydown=e=>{if(e.key==="Enter") unlock();}
-
-/* HEARTBEAT SYNC */
-let beatInterval;
-function startHeartbeat(){
-    heartbeat.volume=0.35;
-    beatInterval=setInterval(()=>{
-        heartbeat.currentTime=0;
-        heartbeat.play();
-    },2500); // synced with glow
-}
-
-/* YES CLICK */
-yesBtn.onclick=()=>{
-    clearInterval(beatInterval);
-    heartbeat.pause();
-    message.style.display="block";
-    launchFireworks();
-};
-
-/* RUNAWAY (BOUNCE) */
 let mouseX=innerWidth/2,mouseY=innerHeight/2;
-let noX=innerWidth*0.6,noY=innerHeight*0.55;
-let vx=0,vy=0,chase=0,surrendered=false,inDanger=false;
-const SAFE=260,FORCE=1.2,MAX=26,FRICTION=0.72,GIVEUP=8;
+let x=innerWidth*0.6,y=innerHeight*0.55;
+let vx=0,vy=0;
 
-addEventListener("mousemove",e=>{mouseX=e.clientX;mouseY=e.clientY});
+let attempts=0,inDanger=false,surrendered=false;
 
-function bounce(){
-    const w=noBtn.offsetWidth,h=noBtn.offsetHeight;
-    if(noX<=0){noX=0;vx=Math.abs(vx)}
-    if(noX+w>=innerWidth){noX=innerWidth-w;vx=-Math.abs(vx)}
-    if(noY<=0){noY=0;vy=Math.abs(vy)}
-    if(noY+h>=innerHeight){noY=innerHeight-h;vy=-Math.abs(vy)}
+const SAFE=200,FORCE=0.8,MAX=20,FRICTION=0.86,PAD=40;
+
+unlockBtn.onclick=unlock;
+pass.onkeydown=e=>{if(e.key==="Enter")unlock()}
+
+function unlock(){
+  if(pass.value==="10102025"){
+    passScreen.style.display="none";
+    main.style.display="block";
+    music.volume=.5; music.play();
+    setInterval(()=>{heartbeat.currentTime=0;heartbeat.play()},2500);
+    setInterval(fallThings,220);
+    requestAnimationFrame(moveNo);
+  }
 }
 
-function updateNo(){
-    if(surrendered) return;
-    const r=noBtn.getBoundingClientRect();
-    const cx=noX+r.width/2,cy=noY+r.height/2;
-    const dx=cx-mouseX,dy=cy-mouseY;
-    const d=Math.hypot(dx,dy);
-    if(d<SAFE){
-        if(!inDanger){chase++;inDanger=true;if(chase>GIVEUP){surrender();return}}
-        vx+=(dx/(d||1))*FORCE*14;
-        vy+=(dy/(d||1))*FORCE*14;
-    } else inDanger=false;
+addEventListener("mousemove",e=>{
+  mouseX=e.clientX; mouseY=e.clientY;
+});
+
+function moveNo(){
+    const r=no.getBoundingClientRect();
+    if(!surrendered){
+        const cx=x+r.width/2, cy=y+r.height/2;
+        const dx=cx-mouseX, dy=cy-mouseY;
+        const d=Math.hypot(dx,dy);
+
+        if(d<SAFE){
+            if(!inDanger){
+                attempts++; inDanger=true;
+                if(attempts>=10) surrender();
+            }
+            vx+=(dx/d)*FORCE*10;
+            vy+=(dy/d)*FORCE*10;
+        } else inDanger=false;
+    } else {
+        driftToYes();
+        return;
+    }
+
     vx=Math.max(-MAX,Math.min(MAX,vx));
     vy=Math.max(-MAX,Math.min(MAX,vy));
-    noX+=vx;noY+=vy;vx*=FRICTION;vy*=FRICTION;
-    bounce();
-    noBtn.style.left=noX+"px";
-    noBtn.style.top=noY+"px";
-    requestAnimationFrame(updateNo);
+    x+=vx; y+=vy;
+    vx*=FRICTION; vy*=FRICTION;
+
+    if(x<PAD){x=PAD;vx=Math.abs(vx)}
+    if(x+r.width>innerWidth-PAD){x=innerWidth-r.width-PAD;vx=-Math.abs(vx)}
+    if(y<PAD){y=PAD;vy=Math.abs(vy)}
+    if(y+r.height>innerHeight-PAD){y=innerHeight-r.height-PAD;vy=-Math.abs(vy)}
+
+    no.style.left=x+"px"; no.style.top=y+"px";
+    requestAnimationFrame(moveNo);
 }
 
 function surrender(){
     surrendered=true;
-    noBtn.textContent="Stop chasing me 😭";
-    vx=vy=0;
-    setTimeout(driftToYes,600);
+    no.textContent="Stop chasing me 😭";
 }
 
 function driftToYes(){
-    const y=yesBtn.getBoundingClientRect(),n=noBtn.getBoundingClientRect();
-    const tx=y.left+y.width/2-n.width/2;
-    const ty=y.top+y.height/2-n.height/2;
-    const dx=tx-noX,dy=ty-noY;
-    noX+=dx*0.02;noY+=dy*0.02;
-    noBtn.style.left=noX+"px";
-    noBtn.style.top=noY+"px";
-    trail(noX+n.width/2,noY+n.height/2);
-    if(Math.hypot(dx,dy)<12){
-        burstHearts(noX+n.width/2,noY+n.height/2);
-        noBtn.remove();
-        yesBtn.classList.add("finalGlow");
-        return;
-    }
-    requestAnimationFrame(driftToYes);
+    const ny=no.getBoundingClientRect(), yy=yes.getBoundingClientRect();
+    const tx=yy.left+yy.width/2-ny.width/2;
+    const ty=yy.top+yy.height/2-ny.height/2;
+    x+=(tx-x)*0.02;
+    y+=(ty-y)*0.02;
+    pinkTrail();
+    no.style.left=x+"px"; no.style.top=y+"px";
+    if(Math.hypot(tx-x,ty-y)<18){
+        heartExplosion(x,y);
+        no.remove();
+    } else requestAnimationFrame(driftToYes);
 }
 
-function startRunaway(){requestAnimationFrame(updateNo)}
-
-/* EFFECTS */
-function trail(x,y){
-    const h=document.createElement("div");
-    h.className="trail";h.textContent="❤️";
-    h.style.left=x+"px";h.style.top=y+"px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),1200);
+function pinkTrail(){
+    const t=document.createElement("div");
+    t.className="trail";
+    t.textContent="💗";
+    t.style.left=x+20+"px";
+    t.style.top=y+10+"px";
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(),900);
 }
-function burstHearts(x,y){
+
+function heartExplosion(x,y){
     for(let i=0;i<28;i++){
-        const h=document.createElement("div");
-        h.className="burst";h.textContent="❤️";
-        h.style.left=x+"px";h.style.top=y+"px";
-        h.style.setProperty("--x",(Math.random()*240-120)+"px");
-        h.style.setProperty("--y",(Math.random()*240-120)+"px");
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),1400);
+        const b=document.createElement("div");
+        b.className="burst";
+        b.textContent="❤️";
+        b.style.left=x+"px";
+        b.style.top=y+"px";
+        const dx=Math.random()*200-100;
+        const dy=Math.random()*200-100;
+        b.style.transition="transform 1.2s ease, opacity 1.2s";
+        document.body.appendChild(b);
+        requestAnimationFrame(()=>b.style.transform=`translate(${dx}px,${dy}px)`);
+        setTimeout(()=>b.style.opacity=0,900);
+        setTimeout(()=>b.remove(),1200);
     }
 }
-function startFalling(){
-    setInterval(()=>{
-        const e=document.createElement("div");
-        e.className="fall";
-        e.textContent=Math.random()>0.5?"❤️":"🌹";
-        e.style.left=Math.random()*100+"vw";
-        e.style.fontSize=(Math.random()*14+18)+"px";
-        e.style.animationDuration=(Math.random()*3+4)+"s";
-        document.body.appendChild(e);
-        setTimeout(()=>e.remove(),8000);
-    },220);
+
+yes.onclick=()=>{
+    fireworks();
+    msg.style.display="block";
+};
+
+function fireworks(){
+    const colors=["🔴","🟡","🔵","🟢","🟣","🟠","✨"];
+    for(let k=0;k<6;k++){
+        setTimeout(()=>{
+            const cx=Math.random()*innerWidth;
+            const cy=Math.random()*innerHeight*0.7;
+            for(let i=0;i<25;i++){
+                const f=document.createElement("div");
+                f.className="burst";
+                f.textContent=colors[Math.floor(Math.random()*colors.length)];
+                f.style.left=cx+"px";
+                f.style.top=cy+"px";
+                const dx=Math.random()*300-150;
+                const dy=Math.random()*300-150;
+                f.style.transition="transform 1.4s ease-out, opacity 1.4s";
+                document.body.appendChild(f);
+                requestAnimationFrame(()=>f.style.transform=`translate(${dx}px,${dy}px)`);
+                setTimeout(()=>f.style.opacity=0,1000);
+                setTimeout(()=>f.remove(),1400);
+            }
+        },k*300);
+    }
 }
 
-/* FIREWORKS */
-const canvas=document.getElementById("fireworks"),ctx=canvas.getContext("2d");
-canvas.width=innerWidth;canvas.height=innerHeight;
-function launchFireworks(){for(let i=0;i<8;i++)setTimeout(burstFW,i*350)}
-function burstFW(){
-    const x=Math.random()*canvas.width,y=Math.random()*canvas.height/2,p=[];
-    for(let i=0;i<70;i++)p.push({x,y,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8,life:60});
-    function anim(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        p.forEach(o=>{o.x+=o.vx;o.y+=o.vy;o.life--;ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;ctx.fillRect(o.x,o.y,3,3)});
-        if(p.some(o=>o.life>0))requestAnimationFrame(anim);
-    }anim();
+function fallThings(){
+    const f=document.createElement("div");
+    f.className="fall";
+    f.textContent=Math.random()>.5?"❤️":"🌹";
+    f.style.left=Math.random()*100+"vw";
+    f.style.top="-30px";                // ✅ ALWAYS START FROM TOP
+    f.style.fontSize=(Math.random()*14+18)+"px";
+    f.style.animation="fall "+(Math.random()*2+3)+"s linear forwards";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),6000);
 }
 </script>
 

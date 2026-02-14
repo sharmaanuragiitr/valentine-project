@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Meenu ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+    height:100vh;
+    background:radial-gradient(circle at top,#2b1055,#000);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    color:white;
+}
+
+/* Login */
+#passwordScreen{text-align:center;z-index:10}
+input{padding:14px 22px;border-radius:30px;border:none;font-size:16px;margin-top:20px}
+button{padding:14px 30px;border:none;border-radius:30px;font-size:16px;cursor:pointer;margin-top:18px}
+#unlockBtn{background:#ff4d6d;color:white}
+
+/* Main */
+#mainContent{display:none;text-align:center;z-index:5;width:90%;max-width:420px}
+
+h1{
+    font-family:'Dancing Script',cursive;
+    font-size:2.4rem;
+    background:linear-gradient(45deg,#ff4d6d,#ff99c8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.buttons{margin-top:40px}
+
+/* YES GLOW */
+#yesBtn{
+    background:linear-gradient(45deg,#ff4d6d,#ff1e4d);
+    color:white;
+    position:relative;
+    box-shadow:0 0 20px rgba(255,77,109,0.6);
+    animation:yesGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes yesGlow{
+    0%{box-shadow:0 0 15px rgba(255,77,109,0.4)}
+    50%{box-shadow:0 0 35px rgba(255,77,109,0.9)}
+    100%{box-shadow:0 0 15px rgba(255,77,109,0.4)}
+}
+
+.finalGlow{
+    animation:finalYesGlow 1.6s ease-in-out infinite !important;
+}
+
+@keyframes finalYesGlow{
+    0%{box-shadow:0 0 25px rgba(255,77,109,0.6)}
+    50%{box-shadow:0 0 60px rgba(255,77,109,1)}
+    100%{box-shadow:0 0 25px rgba(255,77,109,0.6)}
+}
+
+#noBtn{
+    background:#444;
+    color:white;
+    position:fixed;
+    left:60%;
+    top:55%;
+    z-index:100;
+}
+
+/* Message */
+.message{
+    margin-top:30px;
+    display:none;
+    font-size:18px;
+    color:#ffb6c1;
+    line-height:1.6;
+    animation:fadeIn 2s forwards;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* Falling */
+.fall{
+    position:fixed;
+    top:-10px;
+    font-size:22px;
+    animation:fall linear infinite;
+    pointer-events:none;
+}
+
+@keyframes fall{
+    to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* Trail & Burst */
+.trail,.burst{
+    position:fixed;
+    pointer-events:none;
+}
+.trail{font-size:16px;animation:trailFade 1.2s forwards}
+@keyframes trailFade{to{opacity:0;transform:translateY(-20px) scale(0.6)}}
+.burst{font-size:22px;animation:burst 1.4s forwards}
+@keyframes burst{
+    to{transform:translate(var(--x),var(--y)) scale(1.2);opacity:0}
+}
+
+/* Fireworks */
+canvas{position:fixed;top:0;left:0;pointer-events:none}
+</style>
+</head>
+
+<body>
+
+<div id="passwordScreen">
+    <h1>Enter Our Special Date 💕</h1>
+    <input type="password" id="passwordInput" placeholder="DDMMYYYY">
+    <br>
+    <button id="unlockBtn">Unlock 💖</button>
+</div>
+
+<div id="mainContent">
+    <h1>Meenu, Will You Be My Valentine? 💖</h1>
+    <div class="buttons">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="message" id="loveMessage">
+        Meenu ❤️<br>
+        Every moment with you feels magical ✨<br>
+        I promise to love you endlessly 🌹<br>
+        Happy Valentine's Day, My Love ❤️
+    </div>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<!-- AUDIO -->
+<audio id="bgMusic" loop src="https://www.bensound.com/bensound-music/bensound-romantic.mp3"></audio>
+<audio id="heartbeat" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2f6c6f9c7f.mp3"></audio>
+
+<script>
+/* ELEMENTS */
+const passwordScreen=document.getElementById("passwordScreen");
+const passwordInput=document.getElementById("passwordInput");
+const unlockBtn=document.getElementById("unlockBtn");
+const mainContent=document.getElementById("mainContent");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const message=document.getElementById("loveMessage");
+const music=document.getElementById("bgMusic");
+const heartbeat=document.getElementById("heartbeat");
+
+/* LOGIN */
+function unlock(){
+    if(passwordInput.value==="10102025"){
+        passwordScreen.style.display="none";
+        mainContent.style.display="block";
+        music.play();
+        startHeartbeat();
+        startFalling();
+        startRunaway();
+    }
+}
+unlockBtn.onclick=unlock;
+passwordInput.onkeydown=e=>{if(e.key==="Enter") unlock();}
+
+/* HEARTBEAT SYNC */
+let beatInterval;
+function startHeartbeat(){
+    heartbeat.volume=0.35;
+    beatInterval=setInterval(()=>{
+        heartbeat.currentTime=0;
+        heartbeat.play();
+    },2500); // synced with glow
+}
+
+/* YES CLICK */
+yesBtn.onclick=()=>{
+    clearInterval(beatInterval);
+    heartbeat.pause();
+    message.style.display="block";
+    launchFireworks();
+};
+
+/* RUNAWAY (BOUNCE) */
+let mouseX=innerWidth/2,mouseY=innerHeight/2;
+let noX=innerWidth*0.6,noY=innerHeight*0.55;
+let vx=0,vy=0,chase=0,surrendered=false,inDanger=false;
+const SAFE=260,FORCE=1.2,MAX=26,FRICTION=0.72,GIVEUP=8;
+
+addEventListener("mousemove",e=>{mouseX=e.clientX;mouseY=e.clientY});
+
+function bounce(){
+    const w=noBtn.offsetWidth,h=noBtn.offsetHeight;
+    if(noX<=0){noX=0;vx=Math.abs(vx)}
+    if(noX+w>=innerWidth){noX=innerWidth-w;vx=-Math.abs(vx)}
+    if(noY<=0){noY=0;vy=Math.abs(vy)}
+    if(noY+h>=innerHeight){noY=innerHeight-h;vy=-Math.abs(vy)}
+}
+
+function updateNo(){
+    if(surrendered) return;
+    const r=noBtn.getBoundingClientRect();
+    const cx=noX+r.width/2,cy=noY+r.height/2;
+    const dx=cx-mouseX,dy=cy-mouseY;
+    const d=Math.hypot(dx,dy);
+    if(d<SAFE){
+        if(!inDanger){chase++;inDanger=true;if(chase>GIVEUP){surrender();return}}
+        vx+=(dx/(d||1))*FORCE*14;
+        vy+=(dy/(d||1))*FORCE*14;
+    } else inDanger=false;
+    vx=Math.max(-MAX,Math.min(MAX,vx));
+    vy=Math.max(-MAX,Math.min(MAX,vy));
+    noX+=vx;noY+=vy;vx*=FRICTION;vy*=FRICTION;
+    bounce();
+    noBtn.style.left=noX+"px";
+    noBtn.style.top=noY+"px";
+    requestAnimationFrame(updateNo);
+}
+
+function surrender(){
+    surrendered=true;
+    noBtn.textContent="Stop chasing me 😭";
+    vx=vy=0;
+    setTimeout(driftToYes,600);
+}
+
+function driftToYes(){
+    const y=yesBtn.getBoundingClientRect(),n=noBtn.getBoundingClientRect();
+    const tx=y.left+y.width/2-n.width/2;
+    const ty=y.top+y.height/2-n.height/2;
+    const dx=tx-noX,dy=ty-noY;
+    noX+=dx*0.02;noY+=dy*0.02;
+    noBtn.style.left=noX+"px";
+    noBtn.style.top=noY+"px";
+    trail(noX+n.width/2,noY+n.height/2);
+    if(Math.hypot(dx,dy)<12){
+        burstHearts(noX+n.width/2,noY+n.height/2);
+        noBtn.remove();
+        yesBtn.classList.add("finalGlow");
+        return;
+    }
+    requestAnimationFrame(driftToYes);
+}
+
+function startRunaway(){requestAnimationFrame(updateNo)}
+
+/* EFFECTS */
+function trail(x,y){
+    const h=document.createElement("div");
+    h.className="trail";h.textContent="❤️";
+    h.style.left=x+"px";h.style.top=y+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1200);
+}
+function burstHearts(x,y){
+    for(let i=0;i<28;i++){
+        const h=document.createElement("div");
+        h.className="burst";h.textContent="❤️";
+        h.style.left=x+"px";h.style.top=y+"px";
+        h.style.setProperty("--x",(Math.random()*240-120)+"px");
+        h.style.setProperty("--y",(Math.random()*240-120)+"px");
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),1400);
+    }
+}
+function startFalling(){
+    setInterval(()=>{
+        const e=document.createElement("div");
+        e.className="fall";
+        e.textContent=Math.random()>0.5?"❤️":"🌹";
+        e.style.left=Math.random()*100+"vw";
+        e.style.fontSize=(Math.random()*14+18)+"px";
+        e.style.animationDuration=(Math.random()*3+4)+"s";
+        document.body.appendChild(e);
+        setTimeout(()=>e.remove(),8000);
+    },220);
+}
+
+/* FIREWORKS */
+const canvas=document.getElementById("fireworks"),ctx=canvas.getContext("2d");
+canvas.width=innerWidth;canvas.height=innerHeight;
+function launchFireworks(){for(let i=0;i<8;i++)setTimeout(burstFW,i*350)}
+function burstFW(){
+    const x=Math.random()*canvas.width,y=Math.random()*canvas.height/2,p=[];
+    for(let i=0;i<70;i++)p.push({x,y,vx:(Math.random()-0.5)*8,vy:(Math.random()-0.5)*8,life:60});
+    function anim(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        p.forEach(o=>{o.x+=o.vx;o.y+=o.vy;o.life--;ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;ctx.fillRect(o.x,o.y,3,3)});
+        if(p.some(o=>o.life>0))requestAnimationFrame(anim);
+    }anim();
+}
+</script>
+
+</body>
+</html>
